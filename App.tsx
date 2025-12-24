@@ -13,8 +13,7 @@ import { ja } from 'date-fns/locale';
 import { Calendar } from './components/Calendar';
 import { StatsPanel } from './components/StatsPanel';
 import { DayStats } from './types';
-import { downloadIcsFile } from './services/calendarService';
-import { ChevronLeft, ChevronRight, Info, Download, Calendar as CalendarIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Info, Calendar as CalendarIcon } from 'lucide-react';
 
 // Constant: User works 18 days a month
 const FIXED_WORK_DAYS = 18;
@@ -93,23 +92,6 @@ const App: React.FC = () => {
     setSelectedOffDays(newSet);
   };
 
-  const handleExport = () => {
-    // Get all selected days that fall within the current month view
-    const start = startOfMonth(currentDate);
-    const end = endOfMonth(currentDate);
-    const daysInView = eachDayOfInterval({ start, end }).map(d => format(d, 'yyyy-MM-dd'));
-    
-    // Filter selectedOffDays to only include those in current month
-    const exportDates = daysInView.filter(dateStr => selectedOffDays.has(dateStr));
-    
-    if (exportDates.length === 0) {
-      alert("今月の自由休が選択されていません。");
-      return;
-    }
-    
-    downloadIcsFile(exportDates);
-  };
-
   return (
     <div className="min-h-screen pb-12 bg-slate-50">
       {/* Navbar */}
@@ -164,10 +146,9 @@ const App: React.FC = () => {
           onToggleOffDay={toggleOffDay} 
         />
 
-        {/* Legend & Actions Row */}
+        {/* Legend */}
         <div className="mt-4 md:mt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           
-          {/* Legend */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs md:text-sm text-slate-500">
             <div className="flex items-center space-x-1.5">
               <div className="w-3 h-3 md:w-4 md:h-4 bg-white border border-slate-300 rounded"></div>
@@ -186,15 +167,6 @@ const App: React.FC = () => {
               <span>台湾祝日</span>
             </div>
           </div>
-
-          {/* Export Action */}
-          <button 
-            onClick={handleExport}
-            className="w-full md:w-auto flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium shadow-sm transition-colors"
-          >
-            <Download className="w-4 h-4" />
-            <span>カレンダー書き出し(.ics)</span>
-          </button>
         </div>
 
         {/* Info Banner */}
@@ -207,7 +179,6 @@ const App: React.FC = () => {
             </p>
             <p>
               <span className="font-bold">Googleカレンダー連携:</span> 自由休の日付にある <CalendarIcon className="inline w-3 h-3" /> ボタンを押すと、その日の予定作成画面が開きます。
-              「カレンダー書き出し」ボタンで、今月の休みをまとめてカレンダーアプリに取り込めます。
             </p>
           </div>
         </div>

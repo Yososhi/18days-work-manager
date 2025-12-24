@@ -1,6 +1,6 @@
 import React from 'react';
 import { DayStats } from '../types';
-import { AlertCircle, Umbrella } from 'lucide-react';
+import { AlertCircle, Sun } from 'lucide-react';
 
 interface StatsPanelProps {
   stats: DayStats;
@@ -51,7 +51,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({ stats }) => {
             {isOverBudget ? (
               <AlertCircle className="w-3.5 h-3.5 text-red-500" />
             ) : (
-              <Umbrella className="w-3.5 h-3.5 text-indigo-500" />
+              <Sun className="w-3.5 h-3.5 text-indigo-500" />
             )}
             <span className={`text-xs font-bold ${isOverBudget ? 'text-red-600' : 'text-indigo-600'}`}>
               残りの休み枠
